@@ -2,3 +2,4 @@ Ejemplos/
 Date.cvs
 Historic.cvs
 #ignorar archivo cvs DATE y HISTORIC
+!Ejemplos\ScriptVisualizar.sql
