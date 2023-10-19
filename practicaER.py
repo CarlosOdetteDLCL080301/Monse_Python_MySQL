@@ -66,13 +66,13 @@ ent_PD_DESC['PD_DESC'] = ent_PD_DESC['PD_DESC'].map(str)
 #Definiendo los tipos de datos
 dtypes = [Integer, VARCHAR(100), Integer]
 #Creamos una tabla en la DB con los datos del dataframe
-ent_PD_DESC.to_sql(
-    name='tbl_PD_DESC',
-    con=engine,
-    if_exists='replace',
-    index=5000,
-    dtype=dict(zip(ent_PD_DESC.columns, dtypes))
-)
+# ent_PD_DESC.to_sql(
+#     name='tbl_PD_DESC',
+#     con=engine,
+#     if_exists='replace',
+#     index=5000,
+#     dtype=dict(zip(ent_PD_DESC.columns, dtypes))
+# )
 ##################################################################################
 ### LAW_CODE
 ##################################################################################
@@ -81,19 +81,19 @@ ent_LAW_Code = data[['LAW_CODE']].drop_duplicates().reset_index(drop=True)
 #Agregamos un id a cada registro
 ent_LAW_Code.insert(0,'id_LAW_CODE',ent_LAW_Code.index+1)
 #Renombramos las columnas
-ent_LAW_Code.columns = ['id_LAW_Code','LAW_Code']
+ent_LAW_Code.columns = ['id_LAW_CODE','LAW_CODE']
 #Convertimos los datos a string
-ent_LAW_Code['LAW_Code'] = ent_LAW_Code['LAW_Code'].map(str)
+ent_LAW_Code['LAW_CODE'] = ent_LAW_Code['LAW_CODE'].map(str)
 #Definiendo los tipos de datos
 dtypes = [Integer, VARCHAR(100)]
 #Creamos una tabla en la DB con los datos del dataframe
-ent_LAW_Code.to_sql(
-    name='tbl_LAW_Code',
-    con=engine,
-    if_exists='replace',
-    index=5000,
-    dtype=dict(zip(ent_LAW_Code.columns, dtypes))
-)
+# ent_LAW_Code.to_sql(
+#     name='tbl_LAW_Code',
+#     con=engine,
+#     if_exists='replace',
+#     index=5000,
+#     dtype=dict(zip(ent_LAW_Code.columns, dtypes))
+# )
 
 ##################################################################################
 ### AGE_GROUP
@@ -109,35 +109,35 @@ ent_AGE_GROUP['AGE_GROUP'] = ent_AGE_GROUP['AGE_GROUP'].map(str)
 #Definiendo los tipos de datos
 dtypes = [Integer, VARCHAR(100)]
 #Creamos una tabla en la DB con los datos del dataframe
-ent_AGE_GROUP.to_sql(
-    name='tbl_AGE_GROUP',
-    con=engine,
-    if_exists='replace',
-    index=5000,
-    dtype=dict(zip(ent_AGE_GROUP.columns, dtypes))
-)
+# ent_AGE_GROUP.to_sql(
+#     name='tbl_AGE_GROUP',
+#     con=engine,
+#     if_exists='replace',
+#     index=5000,
+#     dtype=dict(zip(ent_AGE_GROUP.columns, dtypes))
+# )
 
 ##################################################################################
 ### PERP_RACE
 ##################################################################################
 #Procesamos los datos para que no se repitan
-ent_AGE_GROUP = data[['PERP_RACE']].drop_duplicates().reset_index(drop=True)
+ent_PERP_RACE = data[['PERP_RACE']].drop_duplicates().reset_index(drop=True)
 #Agregamos un id a cada registro
-ent_AGE_GROUP.insert(0,'id_PERP_RACE',ent_AGE_GROUP.index+1)
+ent_PERP_RACE.insert(0,'id_PERP_RACE',ent_PERP_RACE.index+1)
 #Renombramos las columnas
-ent_AGE_GROUP.columns = ['id_PERP_RACE','PERP_RACE']
+ent_PERP_RACE.columns = ['id_PERP_RACE','PERP_RACE']
 #Convertimos los datos a string
-ent_AGE_GROUP['PERP_RACE'] = ent_AGE_GROUP['PERP_RACE'].map(str)
+ent_PERP_RACE['PERP_RACE'] = ent_PERP_RACE['PERP_RACE'].map(str)
 #Definiendo los tipos de datos
 dtypes = [Integer, VARCHAR(100)]
 #Creamos una tabla en la DB con los datos del dataframe
-ent_AGE_GROUP.to_sql(
-    name='tbl_PERP_RACE',
-    con=engine,
-    if_exists='replace',
-    index=5000,
-    dtype=dict(zip(ent_AGE_GROUP.columns, dtypes))
-)
+# ent_PERP_RACE.to_sql(
+#     name='tbl_PERP_RACE',
+#     con=engine,
+#     if_exists='replace',
+#     index=5000,
+#     dtype=dict(zip(ent_PERP_RACE.columns, dtypes))
+# )
 
 ##################################################################################
 ### OFNS_DESC
@@ -152,21 +152,32 @@ ent_OFNS_DESC.columns = ['id_OFNS_DESC','OFNS_DESC']
 ent_OFNS_DESC['OFNS_DESC'] = ent_OFNS_DESC['OFNS_DESC'].map(str)
 #Definiendo los tipos de datos
 dtypes = [Integer, VARCHAR(100)]
-#Creamos una tabla en la DB con los datos del dataframe
-ent_OFNS_DESC.to_sql(
-    name='tbl_OFNS_DESC',
-    con=engine,
-    if_exists='replace',
-    index=5000,
-    dtype=dict(zip(ent_OFNS_DESC.columns, dtypes))
-)
-
-
-  
-
-##################################################################################
-### En caso de querer tener la tabla completa del CVS en la DB descomentar las siguientes lineas
-##################################################################################
+# #Creamos una tabla en la DB con los datos del dataframe
+# ent_OFNS_DESC.to_sql(
+#     name='tbl_OFNS_DESC',
+#     con=engine,
+#     if_exists='replace',
+#     index=5000,
+#     dtype=dict(zip(ent_OFNS_DESC.columns, dtypes))
+# )
+print(data.head(2))
+print(ent_LAW_Code.head())
+entidadPrincipal = data.copy()
+#Reescribimos los valores Nulos
+entidadPrincipal['LAW_CAT_CD'] = entidadPrincipal['LAW_CAT_CD'].fillna("N/A").astype(str)
+entidadPrincipal['AGE_GROUP'] = entidadPrincipal['AGE_GROUP'].fillna("S/F").astype(str)
+#Hacemos un Join de los demas Dataframe
+entidadPrincipal = entidadPrincipal.merge(ent_LAW_Code, how='left', on='LAW_CODE')
+entidadPrincipal = entidadPrincipal.merge(ent_AGE_GROUP, how='left', on='AGE_GROUP')
+entidadPrincipal = entidadPrincipal.merge(ent_PERP_RACE, how='left', on='PERP_RACE')
+entidadPrincipal = entidadPrincipal.merge(ent_OFNS_DESC, how='left', on='OFNS_DESC')
+#Eliminamos las columnas que no sirven ahora para nuestra tabla principal
+entidadPrincipal.drop('PD_DESC',axis=1,inplace=True)
+print(entidadPrincipal.head(2))
+print(ent_OFNS_DESC.head(2))
+# ##################################################################################
+# ### En caso de querer tener la tabla completa del CVS en la DB descomentar las siguientes lineas
+# ##################################################################################
 # data = data.sample(10000).reset_index(drop=True)
 # data.to_sql('nyc_arrests', con=engine, if_exists='append', index=False)
 
