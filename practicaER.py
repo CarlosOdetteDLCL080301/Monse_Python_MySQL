@@ -50,22 +50,21 @@ session = Session()
 Base.metadata.create_all(engine)
 
 #Cargo los datos del archivo csv en un dataframe
-
 data = pd.read_csv('Ejemplos/Date.csv')
 
 ##################################################################################
-### PD_DESC
+### PD_CD','PD_DESC','KY_CD'
 ##################################################################################
 #Procesamos los datos para que no se repitan
-ent_PD_DESC = data[['PD_DESC']].drop_duplicates().reset_index(drop=True)
+ent_PD_DESC = data[['PD_CD','PD_DESC','KY_CD']].drop_duplicates().reset_index(drop=True)
 #Agregamos un id a cada registro
-ent_PD_DESC.insert(0,'id_PD_DESC',ent_PD_DESC.index+1)
+#ent_PD_DESC.insert(0,'id_PD_DESC',ent_PD_DESC.index+1)
 #Renombramos las columnas
-ent_PD_DESC.columns = ['id_PD_DESC','PD_DESC']
+ent_PD_DESC.columns = ['PD_CD','PD_DESC','KY_CD']
 #Convertimos los datos a string
 ent_PD_DESC['PD_DESC'] = ent_PD_DESC['PD_DESC'].map(str)
 #Definiendo los tipos de datos
-dtypes = [Integer, VARCHAR(100)]
+dtypes = [Integer, VARCHAR(100), Integer]
 #Creamos una tabla en la DB con los datos del dataframe
 ent_PD_DESC.to_sql(
     name='tbl_PD_DESC',
@@ -96,8 +95,78 @@ ent_LAW_Code.to_sql(
     dtype=dict(zip(ent_LAW_Code.columns, dtypes))
 )
 
+##################################################################################
+### AGE_GROUP
+##################################################################################
+#Procesamos los datos para que no se repitan
+ent_AGE_GROUP = data[['AGE_GROUP']].drop_duplicates().reset_index(drop=True)
+#Agregamos un id a cada registro
+ent_AGE_GROUP.insert(0,'id_AGE_GROUP',ent_AGE_GROUP.index+1)
+#Renombramos las columnas
+ent_AGE_GROUP.columns = ['id_AGE_GROUP','AGE_GROUP']
+#Convertimos los datos a string
+ent_AGE_GROUP['AGE_GROUP'] = ent_AGE_GROUP['AGE_GROUP'].map(str)
+#Definiendo los tipos de datos
+dtypes = [Integer, VARCHAR(100)]
+#Creamos una tabla en la DB con los datos del dataframe
+ent_AGE_GROUP.to_sql(
+    name='tbl_AGE_GROUP',
+    con=engine,
+    if_exists='replace',
+    index=5000,
+    dtype=dict(zip(ent_AGE_GROUP.columns, dtypes))
+)
+
+##################################################################################
+### PERP_RACE
+##################################################################################
+#Procesamos los datos para que no se repitan
+ent_AGE_GROUP = data[['PERP_RACE']].drop_duplicates().reset_index(drop=True)
+#Agregamos un id a cada registro
+ent_AGE_GROUP.insert(0,'id_PERP_RACE',ent_AGE_GROUP.index+1)
+#Renombramos las columnas
+ent_AGE_GROUP.columns = ['id_PERP_RACE','PERP_RACE']
+#Convertimos los datos a string
+ent_AGE_GROUP['PERP_RACE'] = ent_AGE_GROUP['PERP_RACE'].map(str)
+#Definiendo los tipos de datos
+dtypes = [Integer, VARCHAR(100)]
+#Creamos una tabla en la DB con los datos del dataframe
+ent_AGE_GROUP.to_sql(
+    name='tbl_PERP_RACE',
+    con=engine,
+    if_exists='replace',
+    index=5000,
+    dtype=dict(zip(ent_AGE_GROUP.columns, dtypes))
+)
+
+##################################################################################
+### OFNS_DESC
+##################################################################################
+#Procesamos los datos para que no se repitan
+ent_OFNS_DESC = data[['OFNS_DESC']].drop_duplicates().reset_index(drop=True)
+#Agregamos un id a cada registro
+ent_OFNS_DESC.insert(0,'id_OFNS_DESC',ent_OFNS_DESC.index+1)
+#Renombramos las columnas
+ent_OFNS_DESC.columns = ['id_OFNS_DESC','OFNS_DESC']
+#Convertimos los datos a string
+ent_OFNS_DESC['OFNS_DESC'] = ent_OFNS_DESC['OFNS_DESC'].map(str)
+#Definiendo los tipos de datos
+dtypes = [Integer, VARCHAR(100)]
+#Creamos una tabla en la DB con los datos del dataframe
+ent_OFNS_DESC.to_sql(s
+    name='tbl_OFNS_DESC',
+    con=engine,
+    if_exists='replace',
+    index=5000,
+    dtype=dict(zip(ent_OFNS_DESC.columns, dtypes))
+)
 
 
+  
+
+##################################################################################
+### En caso de querer tener la tabla completa del CVS en la DB descomentar las siguientes lineas
+##################################################################################
 # data = data.sample(10000).reset_index(drop=True)
 # data.to_sql('nyc_arrests', con=engine, if_exists='append', index=False)
 
