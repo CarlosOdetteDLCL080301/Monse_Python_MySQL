@@ -52,13 +52,56 @@ Base.metadata.create_all(engine)
 #Cargo los datos del archivo csv en un dataframe
 
 data = pd.read_csv('Ejemplos/Date.csv')
-data.shape
-data = data.sample(10000).reset_index(drop=True)
-data.head(2)
-data.to_sql('nyc_arrests', con=engine, if_exists='append', index=False)
 
-data = pd.read_csv('Ejemplos/Historic.csv')
-data.shape
-data = data.sample(10000).reset_index(drop=True)
-data.head(2)
-data.to_sql('nyc_arrests', con=engine, if_exists='append', index=False)
+##################################################################################
+### PD_DESC
+##################################################################################
+#Procesamos los datos para que no se repitan
+ent_PD_DESC = data[['PD_DESC']].drop_duplicates().reset_index(drop=True)
+#Agregamos un id a cada registro
+ent_PD_DESC.insert(0,'id_PD_DESC',ent_PD_DESC.index+1)
+#Renombramos las columnas
+ent_PD_DESC.columns = ['id_PD_DESC','PD_DESC']
+#Convertimos los datos a string
+ent_PD_DESC['PD_DESC'] = ent_PD_DESC['PD_DESC'].map(str)
+#Definiendo los tipos de datos
+dtypes = [Integer, VARCHAR(100)]
+#Creamos una tabla en la DB con los datos del dataframe
+ent_PD_DESC.to_sql(
+    name='tbl_PD_DESC',
+    con=engine,
+    if_exists='replace',
+    index=5000,
+    dtype=dict(zip(ent_PD_DESC.columns, dtypes))
+)
+##################################################################################
+### LAW_CODE
+##################################################################################
+#Procesamos los datos para que no se repitan
+ent_LAW_Code = data[['LAW_CODE']].drop_duplicates().reset_index(drop=True)
+#Agregamos un id a cada registro
+ent_LAW_Code.insert(0,'id_LAW_CODE',ent_LAW_Code.index+1)
+#Renombramos las columnas
+ent_LAW_Code.columns = ['id_LAW_Code','LAW_Code']
+#Convertimos los datos a string
+ent_LAW_Code['LAW_Code'] = ent_LAW_Code['LAW_Code'].map(str)
+#Definiendo los tipos de datos
+dtypes = [Integer, VARCHAR(100)]
+#Creamos una tabla en la DB con los datos del dataframe
+ent_LAW_Code.to_sql(
+    name='tbl_LAW_Code',
+    con=engine,
+    if_exists='replace',
+    index=5000,
+    dtype=dict(zip(ent_LAW_Code.columns, dtypes))
+)
+
+
+
+# data = data.sample(10000).reset_index(drop=True)
+# data.to_sql('nyc_arrests', con=engine, if_exists='append', index=False)
+
+# data = pd.read_csv('Ejemplos/Historic.csv')
+# data.shape
+# data = data.sample(10000).reset_index(drop=True)
+# data.to_sql('nyc_arrests', con=engine, if_exists='append', index=False)

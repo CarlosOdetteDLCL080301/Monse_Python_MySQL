@@ -4,7 +4,7 @@ from sqlalchemy.orm import declarative_base
 Base = declarative_base()
 
 class User(Base):
-    __tablename__ = 'nyc_arrests'  # Nombre de la tabla en la base de datos
+    __tablename__ = 'tbl_PD_DESC'  # Nombre de la tabla en la base de datos
     id = Column(Integer(), primary_key=True)
     name = Column(String(4))
 
