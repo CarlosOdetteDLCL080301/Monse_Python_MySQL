@@ -12,10 +12,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, VARCHAR, DATETIME, VARCHAR,DOUBLE, create_engine
 import pandas as pd
 #Establecemos los parametros para conectarnos
-#La conexión se hace con el siguiente formato"mysql://usuario:contraseña@host:puerto/nombre_de_la_base_de_datos"
-#url_database = 'mysql+mysqlconnector://root:odette@127.0.0.1:3306/monse'
-#engine = create_engine("mysql://root:odette@localhost/monse")
-#engine = create_engine("mysql+mysqldb://root:odette@localhost/monse")
+#La conexión se hace con el siguiente formato"mysql+pymysql://usuario:contraseña@host:puerto/nombre_de_la_base_de_datos"
 engine = create_engine("mysql+pymysql://root:odette@127.0.0.1/monse")
 Base = declarative_base()
 #Damos las caracteristicas de la entidad de nuestra tabla de nuesta DB
