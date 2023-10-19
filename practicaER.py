@@ -153,7 +153,7 @@ ent_OFNS_DESC['OFNS_DESC'] = ent_OFNS_DESC['OFNS_DESC'].map(str)
 #Definiendo los tipos de datos
 dtypes = [Integer, VARCHAR(100)]
 #Creamos una tabla en la DB con los datos del dataframe
-ent_OFNS_DESC.to_sql(s
+ent_OFNS_DESC.to_sql(
     name='tbl_OFNS_DESC',
     con=engine,
     if_exists='replace',
