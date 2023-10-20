@@ -25,7 +25,7 @@ class User(Base):
     KY_CD               = Column(Integer())     #Definimos de tipo INT
     OFNS_DESC           = Column(VARCHAR(100))   #La maxima cadena encontrada fue de 36, pero se deja 40 para posibles casos
     LAW_CODE            = Column(VARCHAR(15))   #La maxima cadena encontrada fue de 10, pero se deja 15 para posibles casos
-    LAW_CAT_CD          = Column(VARCHAR(1))    #La maxima cadena encontrada fue de 1
+    LAW_CAT_CD          = Column(VARCHAR(10))    #La maxima cadena encontrada fue de 1
     ARREST_BORO         = Column(VARCHAR(1))    #La maxima cadena encontrada fue de 1
     ARREST_PRECINCT     = Column(Integer())     #Definimos de tipo INT
     JURISDICTION_CODE   = Column(Integer())     #Definimos de tipo INT
@@ -178,6 +178,18 @@ entidadPrincipal.drop('OFNS_DESC',axis=1,inplace=True)
 entidadPrincipal.drop('LAW_CODE',axis=1,inplace=True)
 entidadPrincipal.drop('AGE_GROUP',axis=1,inplace=True)
 entidadPrincipal.drop('PERP_RACE',axis=1,inplace=True)
+# Creamos la tabla resultante
+#Antes de crear la tabla, debemos definir los tipos de datos, entonces copiamos las columnas y le asignamos un tipo de dato
+#           ARREST_KEY, ARREST_DATE,    PD_CD,      LAW_CAT_CD,     ARREST_BORO,    ARREST_PRECINCT,    JURISDICTION_CODE,  PERP_SEX,       X_COORD_CD, Y_COORD_CD,     Latitude,       Longitude,  Lon_Lat     id_LAW_CODE     id_AGE_GROUP    id_PERP_RACE    id_OFNS_DESC
+dtypes = [  Integer,    VARCHAR(20),    Integer,    VARCHAR(10),    VARCHAR(10),    Integer,            Integer,            VARCHAR(10),    Integer,     Integer,       DOUBLE,         DOUBLE,    VARCHAR(400),    Integer,        Integer,        Integer,        Integer]
+#Creamos una tabla en la DB con los datos del dataframe
+entidadPrincipal.to_sql(
+    name='tbl_principal',
+    con=engine,
+    if_exists='replace',
+    index=5000,
+    dtype=dict(zip(entidadPrincipal.columns, dtypes))
+)
 
 print(entidadPrincipal.head(2))
 print(ent_OFNS_DESC.head(2))
