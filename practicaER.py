@@ -11,13 +11,37 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, VARCHAR, DATETIME, VARCHAR,DOUBLE, create_engine
 import pandas as pd
+
+#Creamos un programa para que fusione los dos archivos csv
+# def fusionar_csv(archivo1, archivo2, archivo_salida):
+#     try:
+#         # Cargar los dos archivos CSV en DataFrames
+#         df1 = pd.read_csv(archivo1)
+#         df2 = pd.read_csv(archivo2)
+
+#         # Fusionar los DataFrames
+#         resultado = pd.concat([df1, df2], ignore_index=True)
+
+#         # Guardar el resultado en un nuevo archivo CSV
+#         resultado.to_csv(archivo_salida, index=False)
+#         print(f'Fusión exitosa. Los datos se han guardado en "{archivo_salida}".')
+
+#     except Exception as e:
+#         print(f'Error al fusionar los archivos CSV: {str(e)}')
+
+# # Ejemplo de uso
+# archivo1 = 'Ejemplos/Date.csv'
+# archivo2 = 'Ejemplos/Historic.csv'
+# archivo_salida = 'Ejemplos/Total.csv'
+# fusionar_csv(archivo1, archivo2, archivo_salida)
+
 #Establecemos los parametros para conectarnos
 #La conexión se hace con el siguiente formato"mysql+pymysql://usuario:contraseña@host:puerto/nombre_de_la_base_de_datos"
 engine = create_engine("mysql+pymysql://root:odette@127.0.0.1/monse")
 Base = declarative_base()
 
 #Cargo los datos del archivo csv en un dataframe
-data = pd.read_csv('Ejemplos/Date.csv')
+data = pd.read_csv('Ejemplos/Total.csv')
 
 ##################################################################################
 ### PD_CD','PD_DESC','KY_CD'
