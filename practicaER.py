@@ -24,8 +24,9 @@ data = pd.read_csv('Ejemplos/Date.csv')
 ##################################################################################
 #Procesamos los datos para que no se repitan
 ent_PD_DESC = data[['PD_CD','PD_DESC','KY_CD']].drop_duplicates().reset_index(drop=True)
-#Agregamos un id a cada registro
-#ent_PD_DESC.insert(0,'id_PD_DESC',ent_PD_DESC.index+1)
+# Rellenar los valores nulos en la columna 'PD_CD' con 9999999
+ent_PD_DESC['PD_CD'].fillna(9999999, inplace=True)
+ent_PD_DESC['KY_CD'].fillna(9999999, inplace=True)
 #Renombramos las columnas
 ent_PD_DESC.columns = ['PD_CD','PD_DESC','KY_CD']
 #Convertimos los datos a string
@@ -128,8 +129,6 @@ ent_OFNS_DESC.to_sql(
     index=5000,
     dtype=dict(zip(ent_OFNS_DESC.columns, dtypes))
 )
-print(data.head(2))
-print(ent_LAW_Code.head())
 entidadPrincipal = data.copy()
 #Reescribimos los valores Nulos
 entidadPrincipal['LAW_CAT_CD'] = entidadPrincipal['LAW_CAT_CD'].fillna("N/A").astype(str)
@@ -158,9 +157,6 @@ entidadPrincipal.to_sql(
     index=5000,
     dtype=dict(zip(entidadPrincipal.columns, dtypes))
 )
-
-print(entidadPrincipal.head(2))
-print(ent_OFNS_DESC.head(2))
 # ##################################################################################
 # ### En caso de querer tener la tabla completa del CVS en la DB descomentar las siguientes lineas
 # ##################################################################################
