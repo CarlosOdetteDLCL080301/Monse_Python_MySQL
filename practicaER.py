@@ -11,7 +11,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, VARCHAR, DATETIME, VARCHAR,DOUBLE, create_engine
 import pandas as pd
-
+import datetime
+hora_actual = datetime.datetime.now()
+hora_formateada = hora_actual.strftime("%Y-%m-%d %H:%M:%S")
+print("Hora de inicio del programa:", hora_formateada)
 #Creamos un programa para que fusione los dos archivos csv
 # def fusionar_csv(archivo1, archivo2, archivo_salida):
 #     try:
@@ -41,7 +44,7 @@ engine = create_engine("mysql+pymysql://root:odette@127.0.0.1/monse")
 Base = declarative_base()
 
 #Cargo los datos del archivo csv en un dataframe
-data = pd.read_csv('Ejemplos/Total.csv')
+data = pd.read_csv('Ejemplos/Historic.csv')
 
 ##################################################################################
 ### PD_CD','PD_DESC','KY_CD'
@@ -77,6 +80,7 @@ ent_LAW_Code.insert(0,'id_LAW_CODE',ent_LAW_Code.index+1)
 ent_LAW_Code.columns = ['id_LAW_CODE','LAW_CODE']
 #Convertimos los datos a string
 ent_LAW_Code['LAW_CODE'] = ent_LAW_Code['LAW_CODE'].map(str)
+ent_LAW_Code['id_LAW_CODE'].fillna(9999999, inplace=True)
 #Definiendo los tipos de datos
 dtypes = [Integer, VARCHAR(100)]
 #Creamos una tabla en la DB con los datos del dataframe
@@ -143,6 +147,7 @@ ent_OFNS_DESC.insert(0,'id_OFNS_DESC',ent_OFNS_DESC.index+1)
 ent_OFNS_DESC.columns = ['id_OFNS_DESC','OFNS_DESC']
 #Convertimos los datos a string
 ent_OFNS_DESC['OFNS_DESC'] = ent_OFNS_DESC['OFNS_DESC'].map(str)
+ent_OFNS_DESC['id_OFNS_DESC'].fillna(9999999, inplace=True)
 #Definiendo los tipos de datos
 dtypes = [Integer, VARCHAR(100)]
 # #Creamos una tabla en la DB con los datos del dataframe
@@ -157,6 +162,13 @@ entidadPrincipal = data.copy()
 #Reescribimos los valores Nulos
 entidadPrincipal['LAW_CAT_CD'] = entidadPrincipal['LAW_CAT_CD'].fillna("N/A").astype(str)
 entidadPrincipal['AGE_GROUP'] = entidadPrincipal['AGE_GROUP'].fillna("S/F").astype(str)
+entidadPrincipal['PD_CD'].fillna(9999999, inplace=True)
+entidadPrincipal['X_COORD_CD'].fillna(9999999, inplace=True)
+entidadPrincipal['Y_COORD_CD'].fillna(9999999, inplace=True)
+entidadPrincipal['Latitude'].fillna(9999999, inplace=True)
+entidadPrincipal['Longitude'].fillna(9999999, inplace=True)
+entidadPrincipal['Lon_Lat'] = entidadPrincipal['Lon_Lat'].fillna("N/A").astype(str)
+
 #Hacemos un Join de los demas Dataframe
 entidadPrincipal = entidadPrincipal.merge(ent_LAW_Code, how='left', on='LAW_CODE')
 entidadPrincipal = entidadPrincipal.merge(ent_AGE_GROUP, how='left', on='AGE_GROUP')
@@ -169,6 +181,9 @@ entidadPrincipal.drop('OFNS_DESC',axis=1,inplace=True)
 entidadPrincipal.drop('LAW_CODE',axis=1,inplace=True)
 entidadPrincipal.drop('AGE_GROUP',axis=1,inplace=True)
 entidadPrincipal.drop('PERP_RACE',axis=1,inplace=True)
+# Limpiamos los null de la tabla resultante
+entidadPrincipal['id_LAW_CODE'].fillna(9999999, inplace=True)
+entidadPrincipal['id_OFNS_DESC'].fillna(9999999, inplace=True)
 # Creamos la tabla resultante
 #Antes de crear la tabla, debemos definir los tipos de datos, entonces copiamos las columnas y le asignamos un tipo de dato
 #           ARREST_KEY, ARREST_DATE,    PD_CD,      LAW_CAT_CD,     ARREST_BORO,    ARREST_PRECINCT,    JURISDICTION_CODE,  PERP_SEX,       X_COORD_CD, Y_COORD_CD,     Latitude,       Longitude,  Lon_Lat     id_LAW_CODE     id_AGE_GROUP    id_PERP_RACE    id_OFNS_DESC
@@ -191,3 +206,8 @@ entidadPrincipal.to_sql(
 # data.shape
 # data = data.sample(10000).reset_index(drop=True)
 # data.to_sql('nyc_arrests', con=engine, if_exists='append', index=False)
+
+hora_final = datetime.datetime.now()
+hora_formateada = hora_final.strftime("%Y-%m-%d %H:%M:%S")
+
+print("Hora de finalización del programa:", hora_formateada)
