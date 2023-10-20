@@ -173,6 +173,12 @@ entidadPrincipal = entidadPrincipal.merge(ent_PERP_RACE, how='left', on='PERP_RA
 entidadPrincipal = entidadPrincipal.merge(ent_OFNS_DESC, how='left', on='OFNS_DESC')
 #Eliminamos las columnas que no sirven ahora para nuestra tabla principal
 entidadPrincipal.drop('PD_DESC',axis=1,inplace=True)
+entidadPrincipal.drop('KY_CD',axis=1,inplace=True)
+entidadPrincipal.drop('OFNS_DESC',axis=1,inplace=True)
+entidadPrincipal.drop('LAW_CODE',axis=1,inplace=True)
+entidadPrincipal.drop('AGE_GROUP',axis=1,inplace=True)
+entidadPrincipal.drop('PERP_RACE',axis=1,inplace=True)
+
 print(entidadPrincipal.head(2))
 print(ent_OFNS_DESC.head(2))
 # ##################################################################################

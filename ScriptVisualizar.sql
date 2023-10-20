@@ -3,6 +3,9 @@ show databases;
 use monse;
 show tables;
 Select * from nyc_arrests;
+Select ARREST_KEY, ARREST_DATE, PD_CD, PD_DESC, KY_CD, OFNS_DESC, LAW_CODE, LAW_CAT_CD, ARREST_BORO, ARREST_PRECINCT, JURISDICTION_CODE, AGE_GROUP, PERP_SEX, PERP_RACE, X_COORD_CD, Y_COORD_CD, Latitude from nyc_arrests;
+Select ARREST_KEY, ARREST_DATE, PD_CD, OFNS_DESC, LAW_CODE, LAW_CAT_CD, ARREST_BORO, ARREST_PRECINCT, JURISDICTION_CODE, AGE_GROUP, PERP_SEX, PERP_RACE, X_COORD_CD, Y_COORD_CD, Latitude from nyc_arrests;
+
 Select COUNT(OFNS_DESC) FROM nyc_arrests;
 Select * from tbl_pd_desc;
 select * from tbl_law_code;
