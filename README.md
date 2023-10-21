@@ -96,4 +96,4 @@ El diagrama se puede ver desde ahora, solo se necesita ejecutar el archivo *fina
 10. Y así obtenemos nuestro diagrama Entidad.
 cuando tenemos el diagrama generado y podemos procesarlo como exportarlo, en un PNG, en nuestro caso se ve así...
 
-(IMAGEN)
+![DiagramaER](https://github.com/CarlosOdetteDLCL080301/Monse_Python_MySQL/assets/54251397/9b07ac56-d903-469e-8e06-54d5af4d4b42)
