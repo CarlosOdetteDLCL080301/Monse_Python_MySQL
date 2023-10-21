@@ -16,27 +16,28 @@ hora_actual = datetime.datetime.now()
 hora_formateada = hora_actual.strftime("%Y-%m-%d %H:%M:%S")
 print("Hora de inicio del programa:", hora_formateada)
 #Creamos un programa para que fusione los dos archivos csv
-# def fusionar_csv(archivo1, archivo2, archivo_salida):
-#     try:
-#         # Cargar los dos archivos CSV en DataFrames
-#         df1 = pd.read_csv(archivo1)
-#         df2 = pd.read_csv(archivo2)
+def fusionar_csv(archivo1, archivo2, archivo_salida):
+    try:
+        # Cargar los dos archivos CSV en DataFrames
+        df1 = pd.read_csv(archivo1)
+        df2 = pd.read_csv(archivo2)
 
-#         # Fusionar los DataFrames
-#         resultado = pd.concat([df1, df2], ignore_index=True)
+        # Fusionar los DataFrames
+        resultado = pd.concat([df1, df2], ignore_index=True)
 
-#         # Guardar el resultado en un nuevo archivo CSV
-#         resultado.to_csv(archivo_salida, index=False)
-#         print(f'Fusión exitosa. Los datos se han guardado en "{archivo_salida}".')
+        # Guardar el resultado en un nuevo archivo CSV
+        resultado.to_csv(archivo_salida, index=False)
+        print(f'Fusión exitosa. Los datos se han guardado en "{archivo_salida}".')
 
-#     except Exception as e:
-#         print(f'Error al fusionar los archivos CSV: {str(e)}')
+    except Exception as e:
+        print(f'Error al fusionar los archivos CSV: {str(e)}')
 
-# # Ejemplo de uso
-# archivo1 = 'Ejemplos/Date.csv'
-# archivo2 = 'Ejemplos/Historic.csv'
-# archivo_salida = 'Ejemplos/Total.csv'
-# fusionar_csv(archivo1, archivo2, archivo_salida)
+# Se cambio el nombre de los archivos para que se pudieran leer, ya que generaban error
+archivo1 = 'Ejemplos/Date.csv'
+archivo2 = 'Ejemplos/Historic.csv'
+# Es el nombre que va a tener el archivo fusionado
+archivo_salida = 'Ejemplos/Total.csv'
+fusionar_csv(archivo1, archivo2, archivo_salida)
 
 #Establecemos los parametros para conectarnos
 #La conexión se hace con el siguiente formato"mysql+pymysql://usuario:contraseña@host:puerto/nombre_de_la_base_de_datos"
@@ -213,17 +214,6 @@ entidadPrincipal.to_sql(
     index=5000,
     dtype=dict(zip(entidadPrincipal.columns, dtypes))
 )
-
-# ### En caso de querer tener la tabla completa del CVS en la DB descomentar las siguientes lineas
-# ##################################################################################
-# ##################################################################################
-#data = data.sample(10000).reset_index(drop=True)
-#data.to_sql('nyc_arrests', con=engine, if_exists='append', index=False)
-
-#data = pd.read_csv('Ejemplos/Total.csv')
-#data.shape
-#data = data.sample(10000).reset_index(drop=True)
-#data.to_sql('nyc_arrests', con=engine, if_exists='append', index=False)
 
 hora_final = datetime.datetime.now()
 hora_formateada = hora_final.strftime("%Y-%m-%d %H:%M:%S")
