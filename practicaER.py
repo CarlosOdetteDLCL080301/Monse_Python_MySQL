@@ -44,7 +44,7 @@ engine = create_engine("mysql+pymysql://root:odette@127.0.0.1/monse")
 Base = declarative_base()
 
 #Cargo los datos del archivo csv en un dataframe
-data = pd.read_csv('Ejemplos/Historic.csv')
+data = pd.read_csv('Ejemplos/Total.csv')
 
 ##################################################################################
 ### PD_CD','PD_DESC','KY_CD'
@@ -58,9 +58,14 @@ ent_PD_DESC['KY_CD'].fillna(9999999, inplace=True)
 ent_PD_DESC.columns = ['PD_CD','PD_DESC','KY_CD']
 #Convertimos los datos a string
 ent_PD_DESC['PD_DESC'] = ent_PD_DESC['PD_DESC'].map(str)
+#agregaremos un registro para los valores nulos
+nuevoRegistro = [9999999,'N/A',9999999]
+ent_PD_DESC.loc[len(ent_PD_DESC)] = nuevoRegistro
+#Eliminamos los registros duplicados de la columna 'PD_CD'
+ent_PD_DESC = ent_PD_DESC.drop_duplicates(subset=['PD_CD'])
 #Definiendo los tipos de datos
 dtypes = [Integer, VARCHAR(100), Integer]
-#Creamos una tabla en la DB con los datos del dataframe
+#Creamos una tabla en la DB con los datos del datafram
 ent_PD_DESC.to_sql(
     name='tbl_PD_DESC',
     con=engine,
@@ -81,6 +86,9 @@ ent_LAW_Code.columns = ['id_LAW_CODE','LAW_CODE']
 #Convertimos los datos a string
 ent_LAW_Code['LAW_CODE'] = ent_LAW_Code['LAW_CODE'].map(str)
 ent_LAW_Code['id_LAW_CODE'].fillna(9999999, inplace=True)
+#agregaremos un registro para los valores nulos
+nuevoRegistro = [9999999,'N/A']
+ent_LAW_Code.loc[len(ent_LAW_Code)] = nuevoRegistro
 #Definiendo los tipos de datos
 dtypes = [Integer, VARCHAR(100)]
 #Creamos una tabla en la DB con los datos del dataframe
@@ -103,6 +111,9 @@ ent_AGE_GROUP.insert(0,'id_AGE_GROUP',ent_AGE_GROUP.index+1)
 ent_AGE_GROUP.columns = ['id_AGE_GROUP','AGE_GROUP']
 #Convertimos los datos a string
 ent_AGE_GROUP['AGE_GROUP'] = ent_AGE_GROUP['AGE_GROUP'].map(str)
+#agregaremos un registro para los valores nulos
+nuevoRegistro = [9999999,'N/A']
+ent_AGE_GROUP.loc[len(ent_AGE_GROUP)] = nuevoRegistro
 #Definiendo los tipos de datos
 dtypes = [Integer, VARCHAR(100)]
 #Creamos una tabla en la DB con los datos del dataframe
@@ -125,6 +136,9 @@ ent_PERP_RACE.insert(0,'id_PERP_RACE',ent_PERP_RACE.index+1)
 ent_PERP_RACE.columns = ['id_PERP_RACE','PERP_RACE']
 #Convertimos los datos a string
 ent_PERP_RACE['PERP_RACE'] = ent_PERP_RACE['PERP_RACE'].map(str)
+#agregaremos un registro para los valores nulos
+nuevoRegistro = [9999999,'N/A']
+ent_PERP_RACE.loc[len(ent_PERP_RACE)] = nuevoRegistro
 #Definiendo los tipos de datos
 dtypes = [Integer, VARCHAR(100)]
 #Creamos una tabla en la DB con los datos del dataframe
@@ -148,6 +162,9 @@ ent_OFNS_DESC.columns = ['id_OFNS_DESC','OFNS_DESC']
 #Convertimos los datos a string
 ent_OFNS_DESC['OFNS_DESC'] = ent_OFNS_DESC['OFNS_DESC'].map(str)
 ent_OFNS_DESC['id_OFNS_DESC'].fillna(9999999, inplace=True)
+#agregaremos un registro para los valores nulos
+nuevoRegistro = [9999999,'N/A']
+ent_OFNS_DESC.loc[len(ent_OFNS_DESC)] = nuevoRegistro
 #Definiendo los tipos de datos
 dtypes = [Integer, VARCHAR(100)]
 # #Creamos una tabla en la DB con los datos del dataframe
@@ -196,16 +213,17 @@ entidadPrincipal.to_sql(
     index=5000,
     dtype=dict(zip(entidadPrincipal.columns, dtypes))
 )
-# ##################################################################################
+
 # ### En caso de querer tener la tabla completa del CVS en la DB descomentar las siguientes lineas
 # ##################################################################################
-# data = data.sample(10000).reset_index(drop=True)
-# data.to_sql('nyc_arrests', con=engine, if_exists='append', index=False)
+# ##################################################################################
+#data = data.sample(10000).reset_index(drop=True)
+#data.to_sql('nyc_arrests', con=engine, if_exists='append', index=False)
 
-# data = pd.read_csv('Ejemplos/Historic.csv')
-# data.shape
-# data = data.sample(10000).reset_index(drop=True)
-# data.to_sql('nyc_arrests', con=engine, if_exists='append', index=False)
+#data = pd.read_csv('Ejemplos/Total.csv')
+#data.shape
+#data = data.sample(10000).reset_index(drop=True)
+#data.to_sql('nyc_arrests', con=engine, if_exists='append', index=False)
 
 hora_final = datetime.datetime.now()
 hora_formateada = hora_final.strftime("%Y-%m-%d %H:%M:%S")

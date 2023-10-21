@@ -37,4 +37,4 @@ DROP TABLE IF EXISTS tbl_ofns_desc;
 DROP TABLE IF EXISTS tbl_pd_desc;
 DROP TABLE IF EXISTS tbl_perp_race;
 DROP TABLE IF EXISTS tbl_principal;
-DROP TABLE IF EXISTS nyc_arrests;
+-- DROP TABLE IF EXISTS nyc_arrests;

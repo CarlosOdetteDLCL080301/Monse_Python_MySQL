@@ -1,5 +1,9 @@
 -- Esta listo, solo para ser ejecutado el script
 USE monse;
+
+-- Se recomienda usar esto para que no interrumpa tu progreso los tiempos de espera limitados a 30 segundos
+SET GLOBAL wait_timeout = 3600; -- Establece un tiempo de espera de 1 hora (3600 segundos)
+
 -- Agregamos primero las llaves primarias de las diferentes entidades
 ALTER TABLE tbl_pd_desc ADD PRIMARY KEY (PD_CD);
 ALTER TABLE tbl_law_code ADD PRIMARY KEY (id_LAW_CODE);
@@ -20,4 +24,4 @@ select * from tbl_law_code;
 select * from tbl_age_group;
 select * from tbl_perp_race;
 select * from tbl_ofns_desc;
-Select * from tbl_principal;
+select * from tbl_principal;
